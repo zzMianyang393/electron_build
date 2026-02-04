@@ -1,0 +1,28 @@
+{
+  "name": "electron-updater-demo",
+  "version": "1.0.0",
+  "main": "main.js",
+  "description": "Demo app for the incremental updater",
+  "scripts": {
+    "start": "electron .",
+    "electron:pack": "electron-builder --dir && node scripts/run-packed.js"
+  },
+  "dependencies": {
+    "electron-incremental-updater": "file:.."
+  },
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.example.updaterdemo",
+    "productName": "UpdaterDemo",
+    "asar": false,
+    "extraResources": [
+      {
+        "from": "updates",
+        "to": "updates"
+      }
+    ]
+  }
+}

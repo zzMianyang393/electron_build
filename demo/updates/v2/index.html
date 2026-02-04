@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Updater Demo v2</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 16px;
+      }
+      button {
+        margin-right: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Electron 更新 Demo</h1>
+    <p>当前版本：<span id="version">加载中...</span></p>
+    <p>这是 v2.0.0 版本。</p>
+    <p>选择更新版本：</p>
+    <button data-version="v2">更新到 v2</button>
+    <button data-version="v3">更新到 v3</button>
+    <button data-version="v4">更新到 v4</button>
+    <p id="status"></p>
+    <script src="renderer.js"></script>
+  </body>
+</html>

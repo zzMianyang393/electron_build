@@ -1,0 +1,7 @@
+{
+  "name": "electron-incremental-updater",
+  "version": "0.1.0",
+  "description": "Incremental update helper for Electron without setup.exe",
+  "main": "src/index.js",
+  "license": "MIT"
+}
