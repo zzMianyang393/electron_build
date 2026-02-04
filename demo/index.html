@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Updater Demo</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 24px;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Electron 增量更新 Demo</h1>
+    <p>当前版本：<strong id="version">-</strong></p>
+    <p>点击下面按钮模拟更新（会关闭并重新启动应用）：</p>
+    <div class="buttons">
+      <button data-version="v2">更新到 v2</button>
+      <button data-version="v3">更新到 v3</button>
+      <button data-version="v4">更新到 v4</button>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>
