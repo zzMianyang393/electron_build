@@ -1,0 +1,14 @@
+{
+  "name": "lanhu-mcp-bridge",
+  "version": "0.1.0",
+  "description": "MCP service that bridges Lanhu design data to AI IDEs",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check lanhu-client.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
