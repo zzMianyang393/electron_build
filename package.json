@@ -6,7 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check lanhu-client.js"
+    "check": "node --check server.js && node --check lanhu-client.js",
+    "test:smoke": "node tests/mcp-smoke-test.js"
   },
   "engines": {
     "node": ">=18"

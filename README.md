@@ -23,6 +23,46 @@ export LANHU_API_BASE="https://api.lanhuapp.com"
 npm start
 ```
 
+## 我如何测试？
+
+你可以按下面 3 层来测试：
+
+### 1) 语法检查（最快）
+
+```bash
+npm run check
+```
+
+### 2) 本地冒烟测试（推荐）
+
+项目内置了一个 **mock 蓝湖 API** + **MCP 协议调用脚本**，会自动验证：
+
+- MCP `initialize` 是否正常
+- `tools/list` 是否能列出工具
+- `tools/call` 是否能拿到并归一化项目与节点数据
+
+```bash
+npm run test:smoke
+```
+
+如果看到 `MCP smoke test passed`，说明主链路可用。
+
+### 3) 在 AI IDE 中联调（真实场景）
+
+把服务配置到 Trae/Kiro/Cursor 的 `mcpServers` 后，直接在 IDE 里调用：
+
+- 工具名：`lanhu_get_project_summary`
+- 参数示例：
+
+```json
+{
+  "projectId": "你的蓝湖项目ID",
+  "nodeIds": ["可选节点ID"]
+}
+```
+
+如果返回了项目信息 + frames 数组，表示 IDE 侧已打通。
+
 ## 在 AI IDE 中配置 MCP
 
 不同 IDE 配置名称略有差异，一般会是 `mcpServers`：
