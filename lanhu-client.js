@@ -27,14 +27,58 @@ async function request(path, options = {}) {
   return response.json();
 }
 
+// 注意：以下路径是通用示意。落地时请按你们团队蓝湖 OpenAPI 文档替换。
+export async function listTeams() {
+  return request("/v1/teams");
+}
+
+export async function listTeamProjects(teamId) {
+  return request(`/v1/teams/${teamId}/projects`);
+}
+
+export async function listProjectCanvases(projectId) {
+  return request(`/v1/projects/${projectId}/canvases`);
+}
+
 export async function getProjectMeta(projectId) {
-  // 注意：具体路径需要按你团队蓝湖开放 API 实际文档调整。
   return request(`/v1/projects/${projectId}`);
 }
 
 export async function getDesignNodes(projectId, nodeIds = []) {
   const query = nodeIds.length ? `?node_ids=${encodeURIComponent(nodeIds.join(","))}` : "";
   return request(`/v1/projects/${projectId}/nodes${query}`);
+}
+
+export async function getCanvasDetail(projectId, canvasId) {
+  return request(`/v1/projects/${projectId}/canvases/${canvasId}`);
+}
+
+export function normalizeTeams(payload) {
+  const items = payload?.data || payload?.teams || [];
+  return items.map((team) => ({
+    id: team.id,
+    name: team.name,
+    role: team.role || null
+  }));
+}
+
+export function normalizeProjects(payload) {
+  const items = payload?.data || payload?.projects || [];
+  return items.map((project) => ({
+    id: project.id,
+    name: project.name,
+    updatedAt: project.updated_at || null
+  }));
+}
+
+export function normalizeCanvases(payload) {
+  const items = payload?.data || payload?.canvases || [];
+  return items.map((canvas) => ({
+    id: canvas.id,
+    name: canvas.name,
+    type: canvas.type || null,
+    updatedAt: canvas.updated_at || null
+  }));
 }
 
 export function normalizeForPrompt(projectMeta, nodes) {
@@ -60,5 +104,21 @@ export function normalizeForPrompt(projectMeta, nodes) {
       updatedAt: projectMeta?.updated_at
     },
     frames
+  };
+}
+
+export function normalizeCanvasForPrompt(projectMeta, canvasDetail) {
+  return {
+    project: {
+      id: projectMeta?.id,
+      name: projectMeta?.name
+    },
+    canvas: {
+      id: canvasDetail?.id,
+      name: canvasDetail?.name,
+      width: canvasDetail?.width || null,
+      height: canvasDetail?.height || null,
+      nodes: canvasDetail?.nodes || []
+    }
   };
 }

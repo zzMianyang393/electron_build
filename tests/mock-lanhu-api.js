@@ -9,9 +9,41 @@ export function startMockLanhuApi(port = 0) {
       return;
     }
 
+    if (req.url === "/v1/teams") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ data: [{ id: "team-1", name: "电商设计组", role: "owner" }] }));
+      return;
+    }
+
+    if (req.url === "/v1/teams/team-1/projects") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ data: [{ id: "demo-project", name: "商城改版", updated_at: "2026-01-01" }] }));
+      return;
+    }
+
     if (req.url === "/v1/projects/demo-project") {
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ id: "demo-project", name: "Demo", updated_at: "2026-01-01" }));
+      res.end(JSON.stringify({ id: "demo-project", name: "商城改版", updated_at: "2026-01-01" }));
+      return;
+    }
+
+    if (req.url === "/v1/projects/demo-project/canvases") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ data: [{ id: "canvas-1", name: "登录页", type: "frame", updated_at: "2026-01-01" }] }));
+      return;
+    }
+
+    if (req.url === "/v1/projects/demo-project/canvases/canvas-1") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          id: "canvas-1",
+          name: "登录页",
+          width: 390,
+          height: 844,
+          nodes: [{ id: "node-1", name: "手机号输入框", type: "input" }]
+        })
+      );
       return;
     }
 

@@ -77,31 +77,57 @@ async function run() {
       jsonrpc: "2.0",
       id: 3,
       method: "tools/call",
+      params: { name: "lanhu_list_teams", arguments: {} }
+    })
+  );
+  child.stdin.write(
+    encode({
+      jsonrpc: "2.0",
+      id: 4,
+      method: "tools/call",
+      params: { name: "lanhu_list_team_projects", arguments: { teamId: "team-1" } }
+    })
+  );
+  child.stdin.write(
+    encode({
+      jsonrpc: "2.0",
+      id: 5,
+      method: "tools/call",
+      params: { name: "lanhu_list_project_canvases", arguments: { projectId: "demo-project" } }
+    })
+  );
+  child.stdin.write(
+    encode({
+      jsonrpc: "2.0",
+      id: 6,
+      method: "tools/call",
       params: {
-        name: "lanhu_get_project_summary",
-        arguments: {
-          projectId: "demo-project"
-        }
+        name: "lanhu_get_canvas_context",
+        arguments: { projectId: "demo-project", canvasId: "canvas-1" }
       }
     })
   );
 
   const init = await waitFor(messages, 1);
   const list = await waitFor(messages, 2);
-  const call = await waitFor(messages, 3);
+  const teams = await waitFor(messages, 3);
+  const projects = await waitFor(messages, 4);
+  const canvases = await waitFor(messages, 5);
+  const canvasCtx = await waitFor(messages, 6);
 
-  if (init.result?.serverInfo?.name !== "lanhu-mcp-bridge") {
-    throw new Error("initialize 响应异常");
-  }
+  if (init.result?.serverInfo?.name !== "lanhu-mcp-bridge") throw new Error("initialize 响应异常");
+  if (!Array.isArray(list.result?.tools) || list.result.tools.length < 5) throw new Error("tools/list 返回异常");
 
-  if (!Array.isArray(list.result?.tools) || list.result.tools.length === 0) {
-    throw new Error("tools/list 未返回工具");
-  }
+  const teamsPayload = JSON.parse(teams.result?.content?.[0]?.text || "{}");
+  const projectsPayload = JSON.parse(projects.result?.content?.[0]?.text || "{}");
+  const canvasesPayload = JSON.parse(canvases.result?.content?.[0]?.text || "{}");
+  const canvasPayload = JSON.parse(canvasCtx.result?.content?.[0]?.text || "{}");
 
-  const text = call.result?.content?.[0]?.text;
-  const parsed = JSON.parse(text);
-  if (parsed.project?.id !== "demo-project" || parsed.frames?.[0]?.id !== "node-1") {
-    throw new Error("tools/call 返回结构异常");
+  if (teamsPayload.teams?.[0]?.id !== "team-1") throw new Error("团队列表异常");
+  if (projectsPayload.projects?.[0]?.id !== "demo-project") throw new Error("项目列表异常");
+  if (canvasesPayload.canvases?.[0]?.id !== "canvas-1") throw new Error("画布列表异常");
+  if (canvasPayload.canvas?.id !== "canvas-1" || canvasPayload.canvas?.nodes?.[0]?.id !== "node-1") {
+    throw new Error("画布上下文异常");
   }
 
   child.kill();
